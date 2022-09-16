@@ -31,12 +31,12 @@ Mover.prototype.update = function () {
   if (this !== attractor) {
     //  find a vector between two location vectors
     let d = this.loc.distance(attractor.loc)
-    if(d < 100){
+    if(d < 200){
       this.acc = JSVector.subGetNew(attractor.loc, this.loc);
       this.acc.normalize();
       this.acc.multiply(0.25);
     }
-    if (d < 50){
+    if (d < 100){
       this.acc = JSVector.subGetNew( this.loc, attractor.loc);
       this.acc.normalize();
       this.acc.multiply(0.25);
@@ -51,10 +51,10 @@ Mover.prototype.update = function () {
 }
 
 Mover.prototype.bounce = function () {
-  if (this.loc.y > canvas.height || this.loc.y < 0) {
+  if (this.loc.y > (canvas.height - this.diam/2) || this.loc.y < (0 + this.diam/2)) {
     this.vel.y *= -1;
   }
-  if (this.loc.x > canvas.width || this.loc.x  < 0) {
+  if (this.loc.x > (canvas.width - this.diam/2) || this.loc.x  < (0+this.diam/2)) {
     this.vel.x *= -1;
   }
 }

@@ -9,7 +9,7 @@ let attractor;
 function init() {
     canvas = document.getElementById("cnv");
     context = canvas.getContext("2d");
-    loadBalls(50);
+    loadBalls(250);
     attractor = new Mover(100, 100, 20);
     animate();      // kick off the animation
 }
