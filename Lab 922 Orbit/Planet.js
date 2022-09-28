@@ -5,9 +5,9 @@ function Planet(x, y, d, num) {
     this.diam = d;
     this.orbs = [];
     for(let j = 0; j<numPlanets; j++){
-        let angVelll = Math.random()*.1 + .01;
+        let angVell = Math.random()*.1 + .01;
         for(let i = 0; i< num; i++){
-            this.orbs[i] = new Orbiter(10, (Math.PI*2/num)*i, angVelll , this.loc, 50);
+            this.orbs[i] = new Orbiter(10, (Math.PI*2/num)*i, angVell , this.loc, 50);
         }
         
     }
