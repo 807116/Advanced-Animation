@@ -1,25 +1,41 @@
-function Planet(x, y, d) {
+function Planet(x, y, d, num) {
     this.loc = new JSVector(x, y);
     this.vel = new JSVector(Math.random() *4 -2, Math.random()*4 -2);
     this.acc = new JSVector(0, 0);
     this.diam = d;
     this.orbs = [];
-   
+    for(let j = 0; j<numPlanets; j++){
+        let angVelll = Math.random()*.1 + .01;
+        for(let i = 0; i< num; i++){
+            this.orbs[i] = new Orbiter(10, (Math.PI*2/num)*i, angVelll , this.loc, 50);
+        }
+        
+    }
+    
+    
 }
 
 Planet.prototype.run = function () {
+    for(let i=0; i<this.orbs.length; i++){
+        this.orbs[i].run(this.loc.x, this.loc.y);
+    }
     this.render();
     this.update();
-    this.translate();
+    this.edges();
 }
 
 Planet.prototype.render = function () {
-    context.beginPath();
-    context.arc(this.loc.x, this.loc.y, this.diam/2, 0, 2*Math.PI);
-    context.strokeStyle = "black";
-    context.fillStyle = "#F8694B";
-    context.fill();
-    context.stroke(); 
+    context.save();
+    context.translate(this.loc.x, this.loc.y);
+    context.beginPath(); 
+    context.moveTo(20,0);
+    context.lineTo(-10,-20);
+    context.lineTo(-10,20);
+    context.lineTo(20,0);
+    context.fillStyle = "gray";    
+    context.fill();     
+    context.stroke();   
+    context.restore();
 }
 
 Planet.prototype.update = function () {
@@ -27,7 +43,7 @@ Planet.prototype.update = function () {
 
 }
 
-Planet.prototype.translate = function () {
+Planet.prototype.edges = function () {
     if (this.loc.y < 0) {
         this.loc.y = canvas.height;
     }

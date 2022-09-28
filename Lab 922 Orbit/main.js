@@ -3,35 +3,22 @@ window.addEventListener("load", init);
 
 let canvas, context;
 let planets = [];
-let orbiters = [];
+let numPlanets = 10;
 
 
 function init() {
     canvas = document.getElementById("cnv");
     context = canvas.getContext("2d");
-    loadPlanets(10);
-    loadOrbiters(20);
+    loadPlanets(numPlanets);
     animate(); 
 }
 
-function loadOrbiters(n){
-    for(let i = 0; i<n; i++){
-       
-        //  fill an array with n balls
-        let x = Math.random()*canvas.width;
-        let y = Math.random()*canvas.height;
-        orbiters.push(new Orbiter(x, y, 5));
-        
-    }
-}
 
 function loadPlanets(n){
     for(let i = 0; i<n; i++){
-       
-        //  fill an array with n balls
         let x = Math.random()*canvas.width;
         let y = Math.random()*canvas.height;
-        planets.push(new Planet(x, y, 20));
+        planets.push(new Planet(x, y, 20, Math.floor(Math.random()*5+3)));
         
     }
 }
@@ -42,9 +29,7 @@ function animate() {
     for(let i=0; i<planets.length; i++){
         planets[i].run();
     }
-    for(let i=0; i<orbiters.length; i++){
-        orbiters[i].run();
-    }
+    
    
     
 
