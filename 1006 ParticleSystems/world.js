@@ -1,10 +1,8 @@
 function World() {
-
   this.cnvMain = document.getElementById('cnv1');
   this.ctxMain = this.cnvMain.getContext('2d');
   this.cnvMini = document.getElementById('cnv2');
   this.ctxMini = this.cnvMini.getContext('2d');
-  //  vector to locate canvas in the world
   this.dims = {
     top: -1500,
     left: -2000,
@@ -13,53 +11,49 @@ function World() {
     width: 4000,
     height: 3000
   }
-
-  this.movers = [];
-  this.loadMovers(210);
-
+  this.particleSystems = [];
+  this.loadSystems(50);
   this.scaleX = this.cnvMini.width / this.dims.width;
   this.scaleY = this.cnvMini.height / this.dims.height;
   this.cnvMainLoc = new JSVector(0, 0);
-
-
   window.addEventListener("keypress", function (event) {
     switch (event.code) {
- 
       case "KeyW":
-        if (world.cnvMainLoc.y + 100 > world.dims.top)
-          world.cnvMainLoc.y -= 20;
+        if (world.cnvMainLoc.y + 100 > (world.dims.top + world.cnvMini.height/2))
+          world.cnvMainLoc.y -= 10;
         break;
       case "KeyS":
-        if (world.cnvMainLoc.y + world.cnvMain.height - 100 < world.dims.bottom)
-          world.cnvMainLoc.y += 20;
+        if (world.cnvMainLoc.y + world.cnvMain.height - 100 < (world.dims.bottom - world.cnvMini.height/2))
+          world.cnvMainLoc.y += 10;
         break;
       case "KeyA":
-        if (world.cnvMainLoc.x + 100 > world.dims.left)
-          world.cnvMainLoc.x -= 20;
+        if (world.cnvMainLoc.x + 100 > (world.dims.left - world.dims.left/20))
+          world.cnvMainLoc.x -= 10;
         break;
       case "KeyD":
-        if (world.cnvMainLoc.x + world.cnvMain.width - 100 < world.dims.right)
-          world.cnvMainLoc.x += 20;
-        break;
-        break;
+        if (world.cnvMainLoc.x + world.cnvMain.width - 100 < (world.dims.right - world.dims.right/20))
+          world.cnvMainLoc.x += 10;
+        break;s
+      break;
     }
   }, false);
-}//++++++++++++++++++++++++++++++  end world constructor
 
+  this.cnvMain.addEventListener("click", function(event){
+    let particleLoc = new JSVector(event.offsetX, event.offsetY);
+    particleLoc.add(world.cnvMainLoc);
+    world.particleSystems.push(new particleSystems(particleLoc.x, particleLoc.y, world.ctxMain, world.ctxMini));
+    
+  }, false);
 
-// run the world in animation
+}
+
 World.prototype.run = function () {
-
   this.ctxMain.clearRect(0, 0, this.cnvMain.width, this.cnvMain.height);
   this.ctxMini.clearRect(0, 0, this.cnvMini.width, this.cnvMini.height);
   this.ctxMain.save();
   this.ctxMini.save();
-
-  
-
   this.ctxMain.translate(-this.cnvMainLoc.x, -this.cnvMainLoc.y);
   this.ctxMini.translate(this.cnvMini.width / 2, this.cnvMini.height / 2);
-
   let ctx = this.ctxMain;
 
   ctx.beginPath();
@@ -67,7 +61,7 @@ World.prototype.run = function () {
   ctx.lineTo(0, this.dims.bottom);
   ctx.closePath();
   ctx.lineWidth = 5;
-  ctx.strokeStyle = "blue";
+  ctx.strokeStyle = "red";
   ctx.stroke();
 
   ctx.beginPath();
@@ -75,38 +69,23 @@ World.prototype.run = function () {
   ctx.lineTo(this.dims.right, 0);
   ctx.closePath();
   ctx.lineWidth = 5;
-  ctx.strokeStyle = "white";
+  ctx.strokeStyle = "red";
   ctx.stroke();
-  //the outline
-  ctx.beginPath();
-  ctx.moveTo(this.dims.left, this.dims.top);
-  ctx.lineTo(this.dims.right, this.dims.top);
-  ctx.lineTo(this.dims.right, this.dims.bottom);
-  ctx.lineTo(this.dims.left, this.dims.bottom);
-  ctx.closePath();
-  ctx.strokeStyle = "green";
-  ctx.stroke();
-
+  
   this.ctxMini.scale(this.scaleX, this.scaleY);
 
-  
-
-  
-  for (let i = 0; i < this.movers.length; i++) {
-    this.movers[i].run();
+  for (let i = 0; i < this.particleSystems.length; i++) {
+    this.particleSystems[i].run();
   }
 
-  //  restore the context
   this.ctxMain.restore();
   let ctx2 = this.ctxMini;
-
-  
   ctx2.beginPath();
   ctx2.moveTo(0, this.dims.top);
   ctx2.lineTo(0, this.dims.bottom);
   ctx2.closePath();
   ctx2.lineWidth = 5;
-  ctx2.strokeStyle = "white";
+  ctx2.strokeStyle = "red";
   ctx2.stroke();
 
   ctx2.beginPath();
@@ -114,39 +93,20 @@ World.prototype.run = function () {
   ctx2.lineTo(this.dims.right, 0);
   ctx2.closePath();
   ctx2.lineWidth = 5;
-  ctx2.strokeStyle = "blue";
-  ctx2.stroke();
-  //    outline box inside of cnvMini
-  ctx2.beginPath();
-  ctx2.moveTo(this.cnvMainLoc.x, this.cnvMainLoc.y);
-  ctx2.lineTo(this.cnvMainLoc.x+this.cnvMain.width, this.cnvMainLoc.y);
-  ctx2.lineTo(this.cnvMainLoc.x+this.cnvMain.width, this.cnvMainLoc.y+this.cnvMain.height);
-  ctx2.lineTo(this.cnvMainLoc.x,this.cnvMainLoc.y+this.cnvMain.height)
-  ctx2.closePath();
-  ctx2.lineWidth = 5;
-  ctx2.strokeStyle = "pink";
+  ctx2.strokeStyle = "red";
   ctx2.stroke();
 
+  ctx2.beginPath();
+  ctx2.rect(this.cnvMainLoc.x, this.cnvMainLoc.y, this.cnvMain.width, this.cnvMain.height);
+  ctx2.strokeStyle = "blue";
+  ctx2.stroke();
 
   this.ctxMini.restore();
 }
 
-//Load mover array
-World.prototype.loadMovers = function (n) {
+World.prototype.loadSystems = function (n) {
   for (let i = 0; i < n; i++) {
-    this.movers[i] = new Mover(Math.random() * this.dims.width - this.dims.width / 2, Math.random() * this.dims.height - this.dims.height / 2, 21, this.getRandomColor(), this.ctxMain, this.ctxMini);
+    this.particleSystems[i] = new ParticleSystem(Math.random() * this.dims.width - this.dims.width / 2, Math.random() * this.dims.height - this.dims.height / 2, 21, "green", this.ctxMain, this.ctxMini);
   }
 }
-World.prototype.getRandomColor = function () {
-  //  List of hex color values for movers
-  let colors = [
-    "#7102AB",
-    "#ab0256",
-    "#0285ab",
-    "#02ab1a",
-    "#ab5302"
-   
-  ];
-  let index = Math.floor(Math.random() * colors.length);
-  return colors[index];
-}
+

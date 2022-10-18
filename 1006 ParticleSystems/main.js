@@ -8,5 +8,10 @@ function init(){
 
 function animate(){
   world.run();
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animate);  
 }
+
+function randomNumber(min, max) { 
+  let rdm = Math.random() * (max - min) + min;
+  return rdm;
+} 
