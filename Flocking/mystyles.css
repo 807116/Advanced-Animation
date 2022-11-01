@@ -1,0 +1,31 @@
+#wrapperDiv {
+    width:1296px;
+    height:696px;
+    border: solid black 3px;
+    background-color:#09303a;
+    }
+
+#sliderDiv {
+    background-color:#09303a;
+    width:200px;
+    height:600px;
+    float:left;
+    }
+
+#canvas {
+   width:1096px;
+   height:696px;
+    float:left;
+    }
+
+.slider {
+    width: 180px;
+    margin:10px;
+    margin-top: 40px;
+    color: rgb(184, 233, 191);
+    }
+
+.slider p {
+    display: inline;
+    padding-left: 5px;
+}
