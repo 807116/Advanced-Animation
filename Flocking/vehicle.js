@@ -35,64 +35,108 @@ Vehicle.prototype.flock = function(vehicles) {
   let cohMult = document.getElementById("slider5").value;;    // %%%%%%%%%%%%%%%%%%
   //  calculate three forces
   sep.multiply(sepMult);
-  //ali.multiply(aliMult);
-  //coh.multiply(cohMult);
+  ali.multiply(aliMult);
+  coh.multiply(cohMult);
   //  add each of these to flockForce
   flockForce.add(sep);
-  //flockForce.add(ali);
-  //flockForce.add(coh);
+  flockForce.add(ali);
+  flockForce.add(coh);
   this.acc.add(flockForce);
 }
 //+++++++++++++++++++++++++++++++++  Flocking functions
 Vehicle.prototype.separate = function (v) {
   // A vector for average of separation forces
+  let sum = new JSVector(0, 0);
   let ds = this.desiredSep*this.desiredSep;
-  let sum = new JSVector(0,0);
-  let steer = new JSVector();
-  //for(let currentV = 0; currentV<v.length; currentV++){
-    let count = 0;
-    for(let other = 0; other<v.length; other++){
-      
-        let d = this.loc.distanceSquared(v[other].loc);
-        if(d <ds && d > 0){
-          let diff = JSVector.subGetNew(this.loc, v[other].loc);
-          diff.normalize();
-          sum.add(diff);
-          count++;
-        }
-      
+  let steer = new JSVector(0, 0); 
+  let count = 0;
+  for (let other = 0; other < v.length; other++) {
+    let d = this.loc.distanceSquared(v[other].loc);
+    if(d < ds && d > 0){
+      let diff = JSVector.subGetNew( this.loc, v[other].loc);
+      diff.normalize();
+      sum.add(diff);
+      count++;
     }
-
-    if(count !== 0){
-      sum.divide(count);
-      sum.normalize();
-      sum.multiply(this.maxSpeed);
-      steer = JSVector.subGetNew(sum, this.vel);
-      steer.limit(this.maxForce);
-
-    }
- // }
-
+  }
+  
+  if(count !== 0){
+    sum.divide(count);
+    sum.normalize();
+    sum.multiply(this.maxSpeed);
+    steer = JSVector.subGetNew(sum, this.vel);
+    steer.limit(this.maxForce)
+  }
   let separationForce = steer;
-
-
   return separationForce;
-
 }
 
 Vehicle.prototype.align = function (v) {
   // A vector for average of align forces
   //return steeringForce;
+
+  let neighbordist = 50;
+  let sum = new JSVector(0, 0);
+  let count = 0;
+  for (let other = 0; other < v.length; other++) {
+    let d = this.loc.distanceSquared(v[other].loc);
+    if ((d > 0) && (d < neighbordist)) {
+      sum.add(v[other].vel);
+      count++;
+    }
+  }
+
+  if (count > 0) {
+    sum.divide(count);
+    sum.normalize();
+    sum.multiply(this.maxSpeed);
+    let steer = JSVector.subGetNew(sum, this.vel);
+    steeringForce = steer;
+  } else {
+    steeringForce = new JSVector(0, 0);
+  }
+
+  return steeringForce;
 }
 
 Vehicle.prototype.cohesion = function (v) {
    // A vector for average of cohesion forces
   //return cohesionForce;
+
+  let neighbordist = 50;
+  let sum = new JSVector(0, 0);
+  let count = 0;
+  for (let other = 0; other < v.length; other++) {
+    let d = this.loc.distanceSquared(v[other].loc);
+    if ((d > 0) && (d < neighbordist)) {
+      sum.add(v[other].loc);
+      count++;
+    }
+  }
+
+  if (count > 0) {
+    sum.divide(count);
+    sum.normalize();
+    sum.multiply(this.maxSpeed);
+    let steer = JSVector.subGetNew(sum, this.vel);
+    steeringForce = steer;
+  } else {
+    steeringForce = new JSVector(0, 0);
+  }
+
+  return steeringForce;
 }
 
 Vehicle.prototype.seek = function(target) {
   // A vector pointing from the location to the target
   //return steeringForce;
+
+  let desired = JSVector.subGetNew(target.loc, this.loc);
+  desired.normalize();
+  desired.multiply(this.maxSpeed);
+  let steer = JSVector.subGetNew(desired, this.vel);
+  steer.limit(this.maxForce);
+  return steer;
 }
 //+++++++++++++++++++++++++++++++++  Flocking functions
 
