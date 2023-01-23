@@ -22,7 +22,7 @@ Foreground.prototype.parallax = function () {
 }
 Foreground.prototype.render = function () {
     let ctx = context;
-    ctx.drawImage(background, 0, 0);
+    //ctx.drawImage(background, 0, 0);
 
     
 }

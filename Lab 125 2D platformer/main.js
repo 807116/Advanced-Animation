@@ -4,6 +4,7 @@ let canvas, context,moveMag;
 let foreground,background;
 let backgrounds = [];
 let foregrounds = [];
+let platforms = [];
 
 
 function init() {
@@ -20,6 +21,9 @@ function animate() {
     for(let i = 0; i<foregrounds.length;i++){
         foregrounds[i].vel.setMagnitude(.5);
         foregrounds[i].run();
+    }
+    for(let i = 0; i<platforms.length; i++){
+        platforms[i] = new Platform(10);
     }
     
     requestAnimationFrame(animate);
