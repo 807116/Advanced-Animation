@@ -6,9 +6,10 @@ function Platform(width) {
     this.height = 10;
   
 }
+
+
 Platform.prototype.run = function () {
     this.render();
-
 }
 
 
