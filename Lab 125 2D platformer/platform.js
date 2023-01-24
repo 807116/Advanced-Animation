@@ -1,5 +1,5 @@
-function Platform(width) {
-    this.loc = new JSVector(Math.random() * (canvas.width), Math.random() * (500-300)+300);
+function Platform(x, y, width) {
+    this.loc = new JSVector(x, y);
  
     this.clr = "black";
     this.size = width;
@@ -14,6 +14,7 @@ Platform.prototype.run = function () {
 
 
 Platform.prototype.render = function () {
+    let ctx = context;
     ctx.beginPath();
     ctx.moveTo(this.loc.x, this.loc.y);
     ctx.lineTo(this.loc.x + this.size, this.loc.y);
