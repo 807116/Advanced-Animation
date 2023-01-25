@@ -1,10 +1,11 @@
 function Hero(width) {
     this.loc = new JSVector(100, 100);
     this.vel = new JSVector(0, 1);
-    this.acc = new JSVector(0,0);
+    this.acc = new JSVector(0,.05);
     this.clr = "blue";
     this.size = width;
     this.height = 5
+    this.jumpCoef = -3;
   
 }
 
@@ -23,14 +24,23 @@ Hero.prototype.update = function(){
     //this.acc
 }
 
+Hero.prototype.jump = function () {
+    this.loc.y = this.loc.y - 10;
+    this.vel.y = this.jumpCoef;
+    this.vel.limit(2);
+}
+
 Hero.prototype.checkPlatform = function(){
     for(let i=0; i<platforms.length; i++){
-        // if(this.loc.y >= platforms[i].loc.y && ((this.loc.x >= platforms[i].loc.x) && (this.loc.x >= platforms[i].size+platforms[i].loc.x))){
-        //     this.vel.y = 0;
-        // }
-        if(this.loc.y >= platforms[i].loc.y && ((this.loc.x >= platforms[i].loc.x) && (this.loc.x >= platforms[i].size+platforms[i].loc.x))){
+      
+        if(this.loc.y >= platforms[i].loc.y && ((this.loc.x >= platforms[i].loc.x) && (this.loc.x <= platforms[i].size+platforms[i].loc.x))){
             this.vel.y = 0;
+            this.loc.y = platforms[i].loc.y;
+            
+            
         }
+        
+
     }
 }
 

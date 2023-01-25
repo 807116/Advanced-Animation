@@ -12,6 +12,15 @@ Platform.prototype.run = function () {
     this.render();
 }
 
+Platform.prototype.posMovePos = function (){
+  this.loc.x+=5;
+    
+}
+
+Platform.prototype.posMoveNeg = function (){
+   this.loc.x-=5;
+}
+
 
 Platform.prototype.render = function () {
     let ctx = context;
