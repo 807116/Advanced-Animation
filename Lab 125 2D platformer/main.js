@@ -17,13 +17,14 @@ function init() {
     foregrounds[0] = new Foreground(0,0, "Red");
     foregrounds[1] = new Foreground(-canvas.width/2, 0, "Blue");
     hero = new Hero(5);
-    loadPlatforms(10);
+    loadPlatforms(1);
     animate();
 }
 
 function loadPlatforms(n){
     for(let i = 0; i<n; i++){
-        platforms[i] = new Platform(Math.random() * (canvas.width), Math.random() * (500-300)+300,50);
+        //platforms[i] = new Platform(Math.random() * (canvas.width), Math.random() * (500-300)+300,50);
+        platforms[i] = new Platform(75, 300, 50);
     }
 }
 
