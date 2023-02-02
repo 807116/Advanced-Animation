@@ -1,8 +1,11 @@
 let world;
 window.onload = init;
+let o;
 
 function init(){
     world = new World();
+    o = new Obj(10);
+
     animate();
 }
 
@@ -37,7 +40,3 @@ function animate(){
     }
   }, false);
 
-function getRandomInt(min, max) {
-                           
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
