@@ -22,7 +22,7 @@ class World {
     }
   
     run() {
-      
+      o.run();
       // run the world in animation
       this.ctxMain.fillStyle = "rgb(0, 0, 55)"; //  color of outer border on Main canvas
       this.ctxMain.clearRect(0, 0, this.cnvMain.width, this.cnvMain.height); //  clear the canvas
@@ -33,9 +33,7 @@ class World {
       
     
 
-  
-      this.runCreatures();
-      this.runFood();
+
 
       
       this.ctxMain.restore();
@@ -56,13 +54,7 @@ class World {
       );
       this.ctxMain.stroke();
   
-      this.ctxMain.restore();
-  
-      // framerate
-      this.ctxMain.font = "20px  bold";
-      this.ctxMain.fillStyle = "orange";
-      let fps = this.framerate + " FPS"; // frames per second
-      this.ctxMain.fillText(fps, 20, this.cnvMain.height - 105);
+      this.ctxMain.restore();  
     
   
      
