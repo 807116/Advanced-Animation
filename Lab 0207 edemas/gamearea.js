@@ -12,12 +12,14 @@ function GameArea(){
     this.wrapperDiv.appendChild(this.canvasDiv)
     this.canvasDiv.setAttribute("style", " background-color:pink; width:1100px; height:700px;float:left;");
 
-    this.tileMenuDiv = document.createElement("div");
+
+    this.tileMenuDivRight = document.createElement("div");
     this.wrapperDiv.appendChild(this.tileMenuDivRight)
-    this.tileMenuDiv.setAttribute("style", " background-color:#FFFFFF; width:100px; height:800px;float:right;");
+    this.tileMenuDivRight.setAttribute("style", " background-color:#FFFFFF; width:100px; height:800px;float:right;");
 
     // place canvas in div and style
     this.canvasDiv.appendChild(canvas);
+    //this.canvasDivRight.appendChild(canvas);
     //  create tiles for tile menu
     this.tiles = [];
     this.tileText = [];
@@ -29,6 +31,14 @@ function GameArea(){
        //this.t1Text.style.padding = "10px";
        this.tiles[i].appendChild(this.tileText[i]);
     }
+    for(let i = 6; i < 12; i++){
+      this.tiles[i] = document.createElement("div");
+      this.tileMenuDivRight.appendChild(this.tiles[i]);
+      this.tiles[i].setAttribute("class", "tile");
+      this.tileText[i] = document.createTextNode("Tile " + (i + 1) + "");
+      //this.t1Text.style.padding = "10px";
+      this.tiles[i].appendChild(this.tileText[i]);
+   }
 
     //  Add listeners to tile objects
     for(let i = 0; i < this.tiles.length; i++){
